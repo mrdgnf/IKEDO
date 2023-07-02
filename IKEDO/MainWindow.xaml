@@ -4,9 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IKEDO"
+        xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Кадровый ЭДО" Height="450" Width="350" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid Background="#FFEBECED">
+
+        <Button x:Name="StartButton" Content="Войти" HorizontalAlignment="Center" Margin="0,292,0,0" VerticalAlignment="Top" Height="60" Width="264" FontFamily="Global Sans Serif" FontWeight="Normal" FontSize="25" Click="Button_Click" Background="White"/>
+        <TextBox x:Name="Token" HorizontalAlignment="Center" Margin="0,40,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="264" Height="212" FontFamily="Global Sans Serif" FontWeight="Normal" FontSize="15"/>
+        <Label Content="Токен" HorizontalAlignment="Left" Margin="32,10,0,0" VerticalAlignment="Top" FontFamily="Global Sans Serif" FontWeight="Bold" FontSize="18" Height="30"/>
+        <ComboBox x:Name="ComboBox" HorizontalAlignment="Center" SelectedIndex="0" Margin="0,257,0,0" VerticalAlignment="Top" Width="264" Height="30" FontFamily="Global Sans Serif" FontWeight="Normal" FontSize="18" Background="White" OpacityMask="White" BorderBrush="White" Foreground="Black">
+            <TextBlock>Demo</TextBlock>
+            <TextBlock>Development</TextBlock>
+        </ComboBox>
+        <ProgressBar x:Name="ProgressBar" HorizontalAlignment="Center" Height="35" Margin="0,357,0,0" VerticalAlignment="Top" Width="264" Visibility="Hidden" BorderBrush="Black" Background="White"/>
 
     </Grid>
 </Window>
