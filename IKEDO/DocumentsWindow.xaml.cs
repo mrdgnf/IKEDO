@@ -117,7 +117,6 @@ namespace IKEDO
 
             DocumentsList.ItemsSource = documents;
         }
-
         private void SetPersonalInfo(Person? personalInfo)
         {
             if (personalInfo == null || personalInfo.LastName == null)
@@ -129,7 +128,6 @@ namespace IKEDO
 
             Email.Text = personalInfo.Email ?? "";
         }
-
         private static string GetFullName(Employee? employee)
         {
             if (employee == null || employee.LastName == null)
@@ -141,7 +139,6 @@ namespace IKEDO
 
             return fullName;
         }
-
         private void DirectorySelectionButton_Click(object sender, RoutedEventArgs e)
         {
             FolderBrowserDialog dialog = new()
@@ -156,7 +153,6 @@ namespace IKEDO
                 _downloadPath = dialog.SelectedPath;
             }
         }
-
         private static void SetColumnName(string columnName, GridViewColumn? column)
         {
             if (column == null)
@@ -166,7 +162,6 @@ namespace IKEDO
 
             column.Header = columnName;
         }
-
         private void MainCheckBox_Click(object sender, RoutedEventArgs e)
         {
             if (MainCheckBox == null || DocumentsList == null)
@@ -197,7 +192,6 @@ namespace IKEDO
                 DeactivateDownloadButton();
             }
         }
-
         private void UnCheckedMainCheckBox()
         {
             if (MainCheckBox == null)
@@ -209,7 +203,6 @@ namespace IKEDO
 
             MainCheckBox.IsChecked = false;
         }
-
         private void ContentCheckBox_Click(object sender, RoutedEventArgs e)
         {
             if (MainCheckBox == null || DocumentsList == null)
@@ -254,32 +247,25 @@ namespace IKEDO
             }
             catch (Exception exception)
             {
-                DownloadProgressBar.Value = 0;
-
-                SwitchUI(download: false);
-
-                UnCheckedAllCheckBox();
+                EnableUI();
 
                 System.Windows.MessageBox.Show(exception.Message);
 
                 return;
             }
         }
-
         private void ActivateDownloadButton()
         {
             DownloadButton.IsEnabled = true;
 
             DownloadButton.Foreground = Brushes.Black;
         }
-
         private void DeactivateDownloadButton()
         {
             DownloadButton.IsEnabled = false;
 
             DownloadButton.Foreground = Brushes.Gray;
         }
-
         private void DownloadDocuments(DocumentType type)
         {
             DeactivateDownloadButton();
@@ -354,6 +340,8 @@ namespace IKEDO
 
                         if (extension == null)
                         {
+                            EnableUI();
+
                             return;
                         }
 
@@ -379,13 +367,17 @@ namespace IKEDO
                 }
                 Dispatcher.Invoke(() =>
                 {
-                    DownloadProgressBar.Value = 0;
-
-                    SwitchUI(download: false);
-
-                    UnCheckedAllCheckBox();
+                    EnableUI();
                 });
             });
+        }
+        private void EnableUI()
+        {
+            DownloadProgressBar.Value = 0;
+
+            SwitchUI(download: false);
+
+            UnCheckedAllCheckBox();
         }
         public static string? GetExtensionFromFileData(byte[] data)
         {
@@ -421,7 +413,6 @@ namespace IKEDO
 
             ProgressBarText.Visibility = download ? Visibility.Visible : Visibility.Hidden;
         }
-
         private void UnCheckedAllCheckBox()
         {
             if(DocumentsList == null || MainCheckBox == null)
@@ -440,7 +431,6 @@ namespace IKEDO
 
             MainCheckBox.IsChecked = false;
         }
-
         private DocumentType GetDocumentType()
         {
             if(InboxRadioButton == null || SentRadioButton == null)

@@ -25,10 +25,8 @@ namespace IKEDO
         {           
             InitializeComponent();
         }
-
         private void LoadDocumentWindow()
         {
-
             string token = Token.Text;
 
             Platform platform = ComboBox.Text == "Demo" ? Platform.Demo : Platform.Development;
@@ -91,7 +89,6 @@ namespace IKEDO
 
             ProgressBar.Value += PROGRESS_STEP;
         }
-
         private void DisableUI()
         {
             StartButton.IsEnabled = false;
@@ -100,7 +97,6 @@ namespace IKEDO
             
             Token.IsEnabled = false;
         }
-
         private void EnableUI()
         {
             StartButton.IsEnabled = true;

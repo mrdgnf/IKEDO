@@ -147,7 +147,6 @@ namespace IKEDO
 
             return data;           
         }
-
         private static async Task<string?> DownloadRequest(Setting setting, string? relativePath)
         {
             const string DEV_URL = "https://api-gw-kedo.cloud.astral-dev.ru/api/v3";
@@ -157,21 +156,19 @@ namespace IKEDO
 
             string key = "Bearer " + setting.Token;
 
-            string path = "";
+            string url = "";
 
             switch (setting.Platform)
             {
                 case Platform.Demo:
-                    path = DEMO_URL + relativePath;
+                    url = DEMO_URL + relativePath;
                     break;
                 case Platform.Development:
-                    path = DEV_URL + relativePath;
+                    url = DEV_URL + relativePath;
                     break;
                 default:
                     break;
             }
-
-            using HttpRequestMessage request = new(HttpMethod.Get, path);
 
             httpClient.DefaultRequestHeaders.Add("accept", "application/json");
 
@@ -179,18 +176,23 @@ namespace IKEDO
 
             httpClient.DefaultRequestHeaders.Add("Authorization", key);
 
-            using HttpResponseMessage response = await httpClient.SendAsync(request);
+            var data = new { DocumentRouteMemberIds = Array.Empty<string>() };
+
+            var json = JsonConvert.SerializeObject(data);
+
+            var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+            using HttpResponseMessage response = await httpClient.PostAsync(url,content);
 
             if (!response.IsSuccessStatusCode)
             {
                 return default;
             }
 
-            string content = await response.Content.ReadAsStringAsync();
+            string rawFiles = await response.Content.ReadAsStringAsync();
 
-            return content;
+            return rawFiles;
         }
-
         public static async Task<List<Document>?> GetDocuments(Setting setting, DocumentType type)
         {
             string? relativePath = null;
@@ -211,7 +213,6 @@ namespace IKEDO
 
             return documents;
         }
-
         public static async Task<Person?> PersonalInfo(Setting setting)
         {
             const string RELATIVE_PATH = "/staff/Employees/PersonalInfo";
@@ -222,7 +223,7 @@ namespace IKEDO
         }
         public static async Task<string?> DownloadRawDocument(Setting setting, string id)
         {
-            string relativePath = $"/docstorage/Documents/{id}/download";
+            string relativePath = $"/docstorage/Documents/{id}/download/signed-files/{DateTimeOffset.Now.Offset:hh\\:mm\\:ss}";
 
             var rawFile = await DownloadRequest(setting, relativePath);
 
